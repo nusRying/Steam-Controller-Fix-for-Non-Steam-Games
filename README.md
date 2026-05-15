@@ -1,14 +1,22 @@
 # Steam Controller Bridge
 
-Steam Controller Bridge is a Windows app that reads a Steam Controller through SDL3 and exposes it as a virtual Xbox 360 controller through ViGEm. The goal is to make the controller usable in non-Steam games without requiring Steam.
+Steam Controller Bridge is a Windows app that reads a Steam Controller through SDL3 and exposes it as a virtual Xbox 360 controller via ViGEm. The goal is to make the controller usable in non-Steam games without requiring Steam.
+
+Features
+- Reads Steam Controller input using SDL3
+- Exposes a ViGEm virtual Xbox 360 controller
+- Works with non-Steam games that support XInput
+
+GUI
+The project includes a small Windows GUI (see the `SteamControllerBridge.UI` folder) for configuring and monitoring the bridge. A command-line mode is also available for headless use.
 
 ## Requirements
 
-- Windows 10 or Windows 11.
+- Windows 10 or Windows 11
 - ViGEm Bus driver installed: https://github.com/ViGEm/ViGEmBus/releases
-- `SDL3.dll` available next to the app or in the runtime path.
+- `SDL3.dll` available next to the app or in the runtime path
 
-## Run It
+## Run it
 
 ### From source
 
@@ -28,7 +36,7 @@ Publish a distributable build:
 .\publish.ps1 -Configuration Release -Runtime win-x64 -Output .\publish
 ```
 
-Build the Windows installer:
+Build the Windows installer (requires Inno Setup):
 
 ```powershell
 & 'C:\Users\umair\AppData\Local\Programs\Inno Setup 6\ISCC.exe' .\installer.iss
