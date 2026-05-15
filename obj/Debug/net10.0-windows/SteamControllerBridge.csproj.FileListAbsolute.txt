@@ -15,3 +15,4 @@ C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0-windows\ref\Steam
 C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0-windows\SteamControllerBridge.csproj.AssemblyReference.cache
 C:\Users\umair\Videos\Steam Controller Patch\bin\Debug\net10.0-windows\Nefarius.ViGEm.Client.dll
 C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0-windows\SteamCon.D912EF43.Up2Date
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0-windows\SteamControllerBridge.sourcelink.json

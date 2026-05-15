@@ -1,70 +1,48 @@
-SteamControllerBridge
-=====================
+# Steam Controller Bridge
 
-Quick start
------------
+Steam Controller Bridge is a Windows app that reads a Steam Controller through SDL3 and exposes it as a virtual Xbox 360 controller through ViGEm. The goal is to make the controller usable in non-Steam games without requiring Steam.
 
-1. Install the ViGEm Bus driver (required to expose a virtual Xbox 360 controller).
-   - Official installer: https://github.com/ViGEm/ViGEmBus/releases
-   - Or install via Chocolatey (Admin PowerShell): `choco install vigem`.
+## Requirements
 
-2. Place `SDL3.dll` next to the built executable (`bin\Debug\net10.0-windows`) or install the SDL3 runtime.
-   - Download the Windows redistributable from https://www.libsdl.org/ (pick the Win32/Win64 SDL3 build).
-   - Alternatively, use the included `install-deps.ps1` to download and extract a supplied SDL3 zip (you must provide a valid download URL).
+- Windows 10 or Windows 11.
+- ViGEm Bus driver installed: https://github.com/ViGEm/ViGEmBus/releases
+- `SDL3.dll` available next to the app or in the runtime path.
 
-3. Run the bridge:
+## Run It
+
+### From source
 
 ```powershell
 dotnet run --project . run
 ```
 
-Notes
------
-- The project uses SDL3 via P/Invoke and Nefarius.ViGEm.Client for the virtual controller. The ViGEm Bus driver must be installed for the virtual controller to appear.
-- If you get "Unable to load DLL 'SDL3'" then `SDL3.dll` is missing from the process PATH or application folder.
+### From the installer
 
-If you want, allow me to download a specific SDL3 redistributable into the build output and retry running the bridge. Provide the SDL3 Windows zip URL or say "auto" to let me attempt a known SDL3 download URL.
-# Steam Controller Bridge
+Run `installer_output\SteamControllerBridgeInstaller.exe` and launch the app from the Start menu or installed shortcut.
 
-This tool automates the Steam Library step that makes Steam Controller support work for non-Steam games.
+## Build
 
-Steam stores non-Steam entries in `shortcuts.vdf`. This app writes those entries for you so you do not need to add games manually in the Steam UI every time.
-
-## Commands
-
-```powershell
-SteamControllerBridge init
-SteamControllerBridge add "C:\Games\Hades\Hades.exe" Hades
-SteamControllerBridge sync steam-shortcuts.json
-```
-
-## Workflow
-
-1. Run `SteamControllerBridge init` to create a starter `steam-shortcuts.json` file.
-2. Edit the file with the games you want Steam to manage.
-3. Run `SteamControllerBridge sync` whenever your library changes.
-
-## Notes
-
-- Steam must be installed and you need to have launched it at least once.
-- The tool searches for `userdata/*/config/shortcuts.vdf` under your Steam folder.
-- If Steam is already open, restart it after syncing so it reloads the shortcuts file.
-
-Building a redistributable EXE and installer
--------------------------------------------
-
-1. Create a self-contained single-file EXE (publish):
+Publish a distributable build:
 
 ```powershell
 .\publish.ps1 -Configuration Release -Runtime win-x64 -Output .\publish
 ```
 
-2. Build an installer (Inno Setup):
- - Install Inno Setup: https://jrsoftware.org/isinfo.php
- - Open `installer.iss` and replace the `{#PUBLISH_DIR}` token with the absolute path to the `publish` folder (or run `ISCC` with a preprocessor define).
- - Compile with Inno Setup Compiler (`ISCC.exe installer.iss`). The resulting installer will be in `installer_output`.
+Build the Windows installer:
 
-Notes
------
-- The installer script is a minimal template — adjust license, icons, and shortcuts as needed.
-- The published folder already includes `SDL3.dll` (if present) and `Nefarius.ViGEm.Client.dll` to simplify distribution.
+```powershell
+& 'C:\Users\umair\AppData\Local\Programs\Inno Setup 6\ISCC.exe' .\installer.iss
+```
+
+## Files
+
+- `Program.cs` contains the command-line entry point and controller bridge loop.
+- `SdlNative.cs` wraps the SDL3 controller APIs.
+- `ViGEmXbox360Controller.cs` wraps the virtual Xbox 360 controller.
+- `publish.ps1` creates the distributable publish folder.
+- `installer.iss` builds the installer.
+
+## Notes
+
+- If the app exits with a ViGEm error, confirm the ViGEm Bus driver is installed and running.
+- If SDL3 cannot be loaded, make sure `SDL3.dll` is present in the app folder or publish output.
