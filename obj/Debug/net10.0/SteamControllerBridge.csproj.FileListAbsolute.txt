@@ -1,0 +1,14 @@
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\SteamControllerBridge.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\SteamControllerBridge.AssemblyInfoInputs.cache
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\SteamControllerBridge.AssemblyInfo.cs
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\SteamControllerBridge.csproj.CoreCompileInputs.cache
+C:\Users\umair\Videos\Steam Controller Patch\bin\Debug\net10.0\SteamControllerBridge.exe
+C:\Users\umair\Videos\Steam Controller Patch\bin\Debug\net10.0\SteamControllerBridge.deps.json
+C:\Users\umair\Videos\Steam Controller Patch\bin\Debug\net10.0\SteamControllerBridge.runtimeconfig.json
+C:\Users\umair\Videos\Steam Controller Patch\bin\Debug\net10.0\SteamControllerBridge.dll
+C:\Users\umair\Videos\Steam Controller Patch\bin\Debug\net10.0\SteamControllerBridge.pdb
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\SteamControllerBridge.dll
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\refint\SteamControllerBridge.dll
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\SteamControllerBridge.pdb
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\SteamControllerBridge.genruntimeconfig.cache
+C:\Users\umair\Videos\Steam Controller Patch\obj\Debug\net10.0\ref\SteamControllerBridge.dll
