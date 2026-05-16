@@ -325,16 +325,34 @@ namespace SteamControllerBridge.UI
             {
                 autoRefreshTimer.Interval = (int)intervalUpDown.Value * 1000;
             }
+            SaveSettings();
         }
 
         private void intervalUpDown_ValueChanged(object? sender, EventArgs e)
         {
             autoRefreshTimer.Interval = (int)intervalUpDown.Value * 1000;
+            SaveSettings();
         }
 
         private void autoRefreshTimer_Tick(object? sender, EventArgs e)
         {
             RefreshDeviceListFromStatus();
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                var store = new SettingsStore();
+                var s = store.Load();
+                s.AutoRefresh = autoRefreshCheckBox.Checked;
+                s.AutoRefreshIntervalSeconds = (int)intervalUpDown.Value;
+                store.Save(s);
+            }
+            catch (Exception ex)
+            {
+                AppendLog("ERR: Failed to save settings: " + ex.Message);
+            }
         }
     }
 }
