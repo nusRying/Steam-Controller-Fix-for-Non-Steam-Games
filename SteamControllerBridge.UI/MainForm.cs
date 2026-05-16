@@ -189,6 +189,30 @@ namespace SteamControllerBridge.UI
             }
         }
 
+        private void MainForm_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                StartBridge();
+                e.Handled = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.T)
+            {
+                StopBridge();
+                e.Handled = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.L)
+            {
+                showLogsButton_Click(this, EventArgs.Empty);
+                e.Handled = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.R)
+            {
+                RefreshDeviceListFromStatus();
+                e.Handled = true;
+            }
+        }
+
         private void AppendLog(string line)
         {
             if (string.IsNullOrEmpty(line)) return;

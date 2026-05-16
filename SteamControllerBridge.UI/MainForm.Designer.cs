@@ -32,6 +32,7 @@ namespace SteamControllerBridge.UI
         private System.Windows.Forms.Label lblTouchpads;
         private System.Windows.Forms.TextBox txtTouchpads;
         private System.Windows.Forms.Button copyDeviceButton;
+        private System.Windows.Forms.ToolTip toolTip1;
 
         protected override void Dispose(bool disposing)
         {
@@ -57,6 +58,7 @@ namespace SteamControllerBridge.UI
             this.showLogsButton = new System.Windows.Forms.Button();
             this.statusPanel = new System.Windows.Forms.Panel();
             this.logTextBox = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -151,6 +153,7 @@ namespace SteamControllerBridge.UI
             this.showLogsButton.Text = "Show logs";
             this.showLogsButton.UseVisualStyleBackColor = true;
             this.showLogsButton.Click += new System.EventHandler(this.showLogsButton_Click);
+            this.toolTip1.SetToolTip(this.showLogsButton, "Toggle logs visibility (Ctrl+L)");
             // 
             // logTextBox
             // 
@@ -162,6 +165,7 @@ namespace SteamControllerBridge.UI
             this.logTextBox.Size = new System.Drawing.Size(400, 180);
             this.logTextBox.TabIndex = 5;
             this.logTextBox.Visible = false;
+            this.toolTip1.SetToolTip(this.logTextBox, "Runtime output from the bridge process");
             // 
             // devicesListBox
             // 
@@ -170,6 +174,7 @@ namespace SteamControllerBridge.UI
             this.devicesListBox.Name = "devicesListBox";
             this.devicesListBox.Size = new System.Drawing.Size(260, 200);
             this.devicesListBox.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.devicesListBox, "Connected controllers; select to view details");
             this.devicesListBox.SelectedIndexChanged += new System.EventHandler(this.devicesListBox_SelectedIndexChanged);
             // 
             // refreshButton
@@ -180,6 +185,7 @@ namespace SteamControllerBridge.UI
             this.refreshButton.Size = new System.Drawing.Size(80, 24);
             this.refreshButton.TabIndex = 7;
             this.refreshButton.Text = "Refresh";
+            this.toolTip1.SetToolTip(this.refreshButton, "Refresh device list (Ctrl+R)");
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
@@ -190,6 +196,7 @@ namespace SteamControllerBridge.UI
             this.autoRefreshCheckBox.Name = "autoRefreshCheckBox";
             this.autoRefreshCheckBox.Size = new System.Drawing.Size(120, 24);
             this.autoRefreshCheckBox.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.autoRefreshCheckBox, "Automatically refresh device list at the configured interval");
             this.autoRefreshCheckBox.Text = "Auto-refresh";
             this.autoRefreshCheckBox.UseVisualStyleBackColor = true;
             this.autoRefreshCheckBox.CheckedChanged += new System.EventHandler(this.autoRefreshCheckBox_CheckedChanged);
@@ -201,6 +208,7 @@ namespace SteamControllerBridge.UI
             this.intervalUpDown.Name = "intervalUpDown";
             this.intervalUpDown.Size = new System.Drawing.Size(46, 22);
             this.intervalUpDown.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.intervalUpDown, "Refresh interval in seconds");
             this.intervalUpDown.Minimum = 1;
             this.intervalUpDown.Maximum = 3600;
             this.intervalUpDown.Value = 5;
@@ -225,6 +233,8 @@ namespace SteamControllerBridge.UI
             // lblInstance
             // 
             this.lblInstance = new System.Windows.Forms.Label();
+            this.KeyPreview = true;
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.lblInstance.Location = new System.Drawing.Point(8, 22);
             this.lblInstance.Name = "lblInstance";
             this.lblInstance.Size = new System.Drawing.Size(60, 20);
