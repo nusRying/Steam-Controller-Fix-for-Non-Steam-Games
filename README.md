@@ -28,6 +28,25 @@ dotnet run --project . run
 
 Run `installer_output\SteamControllerBridgeInstaller.exe` and launch the app from the Start menu or installed shortcut.
 
+Usage examples
+- Run headless (CLI) and keep output in console:
+
+```powershell
+dotnet run --project . run --no-gui
+```
+
+- Run with GUI (Windows):
+
+```powershell
+dotnet run --project .
+```
+
+- Publish a portable build for win-x64:
+
+```powershell
+.\publish.ps1 -Configuration Release -Runtime win-x64 -Output .\publish
+```
+
 ## Build
 
 Publish a distributable build:
