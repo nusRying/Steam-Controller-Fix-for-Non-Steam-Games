@@ -9,7 +9,7 @@ namespace SteamControllerBridge.UI
     public partial class MainForm : Form
     {
         private Process? bridgeProcess;
-        private bool logsVisible = true;
+        private bool logsVisible = false;
         private readonly HashSet<string> connectedDevices = new();
         private readonly Regex statusLineRegex = new(@"^(?<id>\d+): (?<name>.+?) \[vendor=0x(?<vendor>[0-9A-Fa-f]+), product=0x(?<product>[0-9A-Fa-f]+), touchpads=(?<touchpads>\d+)\]", RegexOptions.Compiled);
 

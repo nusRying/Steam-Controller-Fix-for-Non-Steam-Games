@@ -146,9 +146,9 @@ namespace SteamControllerBridge.UI
             // 
             this.showLogsButton.Location = new System.Drawing.Point(144, 36);
             this.showLogsButton.Name = "showLogsButton";
-            this.showLogsButton.Size = new System.Drawing.Size(60, 24);
+            this.showLogsButton.Size = new System.Drawing.Size(80, 24);
             this.showLogsButton.TabIndex = 4;
-            this.showLogsButton.Text = "Logs";
+            this.showLogsButton.Text = "Show logs";
             this.showLogsButton.UseVisualStyleBackColor = true;
             this.showLogsButton.Click += new System.EventHandler(this.showLogsButton_Click);
             // 
@@ -161,6 +161,7 @@ namespace SteamControllerBridge.UI
             this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.logTextBox.Size = new System.Drawing.Size(400, 180);
             this.logTextBox.TabIndex = 5;
+            this.logTextBox.Visible = false;
             // 
             // devicesListBox
             // 
@@ -169,6 +170,7 @@ namespace SteamControllerBridge.UI
             this.devicesListBox.Name = "devicesListBox";
             this.devicesListBox.Size = new System.Drawing.Size(260, 200);
             this.devicesListBox.TabIndex = 6;
+            this.devicesListBox.SelectedIndexChanged += new System.EventHandler(this.devicesListBox_SelectedIndexChanged);
             // 
             // refreshButton
             // 
@@ -327,7 +329,8 @@ namespace SteamControllerBridge.UI
             // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(424, 260);
+            this.ClientSize = new System.Drawing.Size(700, 380);
+            this.Controls.Add(this.deviceDetailsGroup);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.devicesListBox);
             this.Controls.Add(this.refreshButton);
