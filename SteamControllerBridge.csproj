@@ -6,10 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Nefarius.ViGEm.Client" Version="1.21.256" />
+  </ItemGroup>
+
+  <!-- Exclude nested UI project files from automatic compilation in the root project -->
+  <ItemGroup>
+    <Compile Remove="SteamControllerBridge.UI\**\*.cs" />
+    <None Remove="SteamControllerBridge.UI\**\*" />
   </ItemGroup>
 
 </Project>

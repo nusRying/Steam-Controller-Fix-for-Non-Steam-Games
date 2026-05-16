@@ -320,37 +320,6 @@ internal sealed class SteamControllerSession : IDisposable
 			return;
 		}
 
-		public string GetStatusText()
-		{
-			try
-			{
-				short lx = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftX);
-				short ly = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftY);
-				short rx = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightX);
-				short ry = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightY);
-				short lt = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftTrigger);
-				short rt = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightTrigger);
-
-				string tp0 = "";
-				string tp1 = "";
-				if (SdlNative.GetNumGamepadTouchpads(gamepad) > 0)
-				{
-					if (TryReadTouchpad(0, out bool d0, out float x0, out float y0))
-						tp0 = $"tp0={(d0?1:0)},{x0:F3},{y0:F3}";
-				}
-				if (SdlNative.GetNumGamepadTouchpads(gamepad) > 1)
-				{
-					if (TryReadTouchpad(1, out bool d1, out float x1, out float y1))
-						tp1 = $"tp1={(d1?1:0)},{x1:F3},{y1:F3}";
-				}
-
-				return $"{deviceInfo.Name.Replace(' ', '_')} lx={lx} ly={ly} rx={rx} ry={ry} lt={lt} rt={rt} {tp0} {tp1}";
-			}
-			catch
-			{
-				return deviceInfo.Name.Replace(' ', '_');
-			}
-		}
 		virtualController.SetButton("A", SdlNative.GetGamepadButton(gamepad, SdlGamepadButton.South));
 		virtualController.SetButton("B", SdlNative.GetGamepadButton(gamepad, SdlGamepadButton.East));
 		virtualController.SetButton("X", SdlNative.GetGamepadButton(gamepad, SdlGamepadButton.West));
@@ -383,6 +352,38 @@ internal sealed class SteamControllerSession : IDisposable
 		MapLeftTouchpadToDPad(virtualController);
 		virtualController.SetAxis("LeftTrigger", ToTriggerValue(SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftTrigger)));
 		virtualController.SetAxis("RightTrigger", ToTriggerValue(SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightTrigger)));
+	}
+
+	public string GetStatusText()
+	{
+		try
+		{
+			short lx = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftX);
+			short ly = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftY);
+			short rx = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightX);
+			short ry = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightY);
+			short lt = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftTrigger);
+			short rt = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightTrigger);
+
+			string tp0 = "";
+			string tp1 = "";
+			if (SdlNative.GetNumGamepadTouchpads(gamepad) > 0)
+			{
+				if (TryReadTouchpad(0, out bool d0, out float x0, out float y0))
+					tp0 = $"tp0={(d0?1:0)},{x0:F3},{y0:F3}";
+			}
+			if (SdlNative.GetNumGamepadTouchpads(gamepad) > 1)
+			{
+				if (TryReadTouchpad(1, out bool d1, out float x1, out float y1))
+					tp1 = $"tp1={(d1?1:0)},{x1:F3},{y1:F3}";
+			}
+
+			return $"{deviceInfo.Name.Replace(' ', '_')} lx={lx} ly={ly} rx={rx} ry={ry} lt={lt} rt={rt} {tp0} {tp1}";
+		}
+		catch
+		{
+			return deviceInfo.Name.Replace(' ', '_');
+		}
 	}
 
 	private void MapLeftTouchpadToDPad(ViGEmXbox360Controller virtualController)

@@ -56,21 +56,9 @@ TemporaryDependencyNodeTargetIdentifier=net10.0-windows
 [sourceFiles]
 obj/Debug/net10.0-windows/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
- SteamControllerBridge.AssemblyInfo.cs
  SteamControllerBridge.GlobalUsings.g.cs
 Program.cs
 SdlNative.cs
-SteamControllerBridge.UI/
- MainForm.cs
- MainForm.Designer.cs
- obj/Debug/net10.0-windows/
-  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
-  SteamControllerBridge.UI.AssemblyInfo.cs
-  SteamControllerBridge.UI.GlobalUsings.g.cs
- Program.cs
- SettingsForm.cs
- SettingsForm.Designer.cs
- SettingsStore.cs
 ViGEmXbox360Controller.cs
 
 [metadataReferences]
