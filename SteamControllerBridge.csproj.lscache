@@ -70,6 +70,7 @@ SteamControllerBridge.UI/
  Program.cs
  SettingsForm.cs
  SettingsForm.Designer.cs
+ SettingsStore.cs
 ViGEmXbox360Controller.cs
 
 [metadataReferences]

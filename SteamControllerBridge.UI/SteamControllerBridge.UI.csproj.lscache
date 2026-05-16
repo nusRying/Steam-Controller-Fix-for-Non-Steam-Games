@@ -63,6 +63,7 @@ obj/Debug/net10.0-windows/
 Program.cs
 SettingsForm.cs
 SettingsForm.Designer.cs
+SettingsStore.cs
 
 [metadataReferences]
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.3/ref/net10.0/

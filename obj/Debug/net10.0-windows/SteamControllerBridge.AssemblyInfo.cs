@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SteamControllerBridge")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+754274ab78803168c68bcc25a8e3c1d71c6c6b0b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84aa340452585725f467aaf6e1654a50ac33c043")]
 [assembly: System.Reflection.AssemblyProductAttribute("SteamControllerBridge")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SteamControllerBridge")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
