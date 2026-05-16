@@ -1,75 +1,74 @@
 # Steam Controller Bridge
 
-Steam Controller Bridge is a Windows app that reads a Steam Controller through SDL3 and exposes it as a virtual Xbox 360 controller via ViGEm. The goal is to make the controller usable in non-Steam games without requiring Steam.
+Steam Controller Bridge exposes a Steam Controller as a virtual Xbox 360 controller on Windows so non-Steam games can use it via XInput. It reads the controller using SDL3 and sends input to a ViGEm virtual Xbox 360 device.
 
-Features
-- Reads Steam Controller input using SDL3
-- Exposes a ViGEm virtual Xbox 360 controller
-- Works with non-Steam games that support XInput
+Key features
+- Read Steam Controller input using SDL3
+- Present a ViGEm virtual Xbox 360 controller (XInput)
+- Small Windows GUI and headless CLI mode
 
-GUI
-The project includes a small Windows GUI (see the `SteamControllerBridge.UI` folder) for configuring and monitoring the bridge. A command-line mode is also available for headless use.
+Quick Start
 
-## Requirements
-
+Prerequisites
 - Windows 10 or Windows 11
-- ViGEm Bus driver installed: https://github.com/ViGEm/ViGEmBus/releases
-- `SDL3.dll` available next to the app or in the runtime path
+- ViGEm Bus driver: https://github.com/ViGEm/ViGEmBus/releases (install and reboot if required)
+- `SDL3.dll` available next to the app binary or on the system PATH
 
-## Run it
+Run from source
 
-### From source
-
-```powershell
-dotnet run --project . run
-```
-
-### From the installer
-
-Run `installer_output\SteamControllerBridgeInstaller.exe` and launch the app from the Start menu or installed shortcut.
-
-Usage examples
-- Run headless (CLI) and keep output in console:
+Open a PowerShell prompt and run:
 
 ```powershell
-dotnet run --project . run --no-gui
+dotnet run --project . -- run
 ```
 
-- Run with GUI (Windows):
+Run headless (no GUI):
 
 ```powershell
-dotnet run --project .
+dotnet run --project . -- run --no-gui
 ```
 
-- Publish a portable build for win-x64:
+Run with GUI (Windows):
+
+```powershell
+dotnet run --project SteamControllerBridge.UI
+```
+
+Publish a portable build (example for win-x64):
 
 ```powershell
 .\publish.ps1 -Configuration Release -Runtime win-x64 -Output .\publish
 ```
 
-## Build
+Installer
 
-Publish a distributable build:
-
-```powershell
-.\publish.ps1 -Configuration Release -Runtime win-x64 -Output .\publish
-```
-
-Build the Windows installer (requires Inno Setup):
+If you build the installer, the author used Inno Setup. Example to build (adjust path to your ISCC.exe):
 
 ```powershell
 & 'C:\Users\umair\AppData\Local\Programs\Inno Setup 6\ISCC.exe' .\installer.iss
 ```
 
-## Files
+Project layout
 
-- `Program.cs` contains the command-line entry point and controller bridge loop.
-- `SdlNative.cs` wraps the SDL3 controller APIs.
-- `ViGEmXbox360Controller.cs` wraps the virtual Xbox 360 controller.
-- `publish.ps1` creates the distributable publish folder.
-- `installer.iss` builds the installer.
+- `Program.cs` — command-line entry and main bridge loop
+- `SdlNative.cs` — SDL3 interop for the Steam Controller
+- `ViGEmXbox360Controller.cs` — ViGEm wrapper for the virtual controller
+- `SteamControllerBridge.UI/` — Windows Forms UI and settings
+- `publish.ps1` — helper script to publish binaries
+- `installer.iss` — Inno Setup script for creating the installer
 
-## Notes
+Troubleshooting
 
-- If the app exits with a ViGEm error, confirm the ViGEm Bus driver is installed and running.
-- If SDL3 cannot be loaded, make sure `SDL3.dll` is present in the app folder or publish output.
+- ViGEm errors: ensure ViGEm Bus driver is installed and running; reinstall if needed.
+- SDL3 load failures: place `SDL3.dll` alongside the executable or in your PATH.
+- If controls behave oddly in a game, try recalibrating mappings in the GUI or testing with an XInput tester.
+
+Contributing
+
+Contributions welcome. Open issues for bugs or feature requests and send PRs for fixes or improvements.
+
+License
+
+See the project repository for license information (no license file included here).
+
+For UI-specific settings and documentation, see the `SteamControllerBridge.UI` folder.
