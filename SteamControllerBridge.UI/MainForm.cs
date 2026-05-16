@@ -222,6 +222,64 @@ namespace SteamControllerBridge.UI
                 devicesListBox.Items.Add(d);
         }
 
+        private void devicesListBox_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (devicesListBox.SelectedItem == null)
+            {
+                ClearDeviceDetails();
+                return;
+            }
+
+            string selected = devicesListBox.SelectedItem.ToString() ?? string.Empty;
+            // expected format: "{id}: {name} [vendor=0x{vendor}, product=0x{product}, touchpads={touchpads}]"
+            var m = statusLineRegex.Match(selected);
+            if (m.Success)
+            {
+                txtInstance.Text = m.Groups["id"].Value;
+                txtName.Text = m.Groups["name"].Value;
+                txtVendor.Text = "0x" + m.Groups["vendor"].Value;
+                txtProduct.Text = "0x" + m.Groups["product"].Value;
+                txtTouchpads.Text = m.Groups["touchpads"].Value;
+            }
+            else
+            {
+                // fallback: set full text into Name
+                txtInstance.Text = string.Empty;
+                txtName.Text = selected;
+                txtVendor.Text = string.Empty;
+                txtProduct.Text = string.Empty;
+                txtTouchpads.Text = string.Empty;
+            }
+        }
+
+        private void ClearDeviceDetails()
+        {
+            txtInstance.Text = string.Empty;
+            txtName.Text = string.Empty;
+            txtVendor.Text = string.Empty;
+            txtProduct.Text = string.Empty;
+            txtTouchpads.Text = string.Empty;
+        }
+
+        private void copyDeviceButton_Click(object? sender, EventArgs e)
+        {
+            var parts = new List<string>();
+            if (!string.IsNullOrEmpty(txtInstance.Text)) parts.Add($"Instance: {txtInstance.Text}");
+            if (!string.IsNullOrEmpty(txtName.Text)) parts.Add($"Name: {txtName.Text}");
+            if (!string.IsNullOrEmpty(txtVendor.Text)) parts.Add($"Vendor: {txtVendor.Text}");
+            if (!string.IsNullOrEmpty(txtProduct.Text)) parts.Add($"Product: {txtProduct.Text}");
+            if (!string.IsNullOrEmpty(txtTouchpads.Text)) parts.Add($"Touchpads: {txtTouchpads.Text}");
+            string text = string.Join("\t", parts);
+            try
+            {
+                Clipboard.SetText(text);
+            }
+            catch
+            {
+                AppendLog("ERR: Could not copy to clipboard");
+            }
+        }
+
         private void startButton_Click(object? sender, EventArgs e)
         {
             StartBridge();

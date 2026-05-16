@@ -20,6 +20,18 @@ namespace SteamControllerBridge.UI
         private System.Windows.Forms.CheckBox autoRefreshCheckBox;
         private System.Windows.Forms.NumericUpDown intervalUpDown;
         private System.Windows.Forms.Timer autoRefreshTimer;
+        private System.Windows.Forms.GroupBox deviceDetailsGroup;
+        private System.Windows.Forms.Label lblInstance;
+        private System.Windows.Forms.TextBox txtInstance;
+        private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.Label lblVendor;
+        private System.Windows.Forms.TextBox txtVendor;
+        private System.Windows.Forms.Label lblProduct;
+        private System.Windows.Forms.TextBox txtProduct;
+        private System.Windows.Forms.Label lblTouchpads;
+        private System.Windows.Forms.TextBox txtTouchpads;
+        private System.Windows.Forms.Button copyDeviceButton;
 
         protected override void Dispose(bool disposing)
         {
@@ -197,6 +209,121 @@ namespace SteamControllerBridge.UI
             this.autoRefreshTimer = new System.Windows.Forms.Timer();
             this.autoRefreshTimer.Interval = 5000;
             this.autoRefreshTimer.Tick += new System.EventHandler(this.autoRefreshTimer_Tick);
+            // 
+            // deviceDetailsGroup
+            // 
+            this.deviceDetailsGroup = new System.Windows.Forms.GroupBox();
+            this.deviceDetailsGroup.Location = new System.Drawing.Point(12, 252);
+            this.deviceDetailsGroup.Name = "deviceDetailsGroup";
+            this.deviceDetailsGroup.Size = new System.Drawing.Size(668, 100);
+            this.deviceDetailsGroup.TabIndex = 10;
+            this.deviceDetailsGroup.TabStop = false;
+            this.deviceDetailsGroup.Text = "Selected Device";
+            // 
+            // lblInstance
+            // 
+            this.lblInstance = new System.Windows.Forms.Label();
+            this.lblInstance.Location = new System.Drawing.Point(8, 22);
+            this.lblInstance.Name = "lblInstance";
+            this.lblInstance.Size = new System.Drawing.Size(60, 20);
+            this.lblInstance.Text = "Instance:";
+            // 
+            // txtInstance
+            // 
+            this.txtInstance = new System.Windows.Forms.TextBox();
+            this.txtInstance.Location = new System.Drawing.Point(70, 20);
+            this.txtInstance.Name = "txtInstance";
+            this.txtInstance.ReadOnly = true;
+            this.txtInstance.Size = new System.Drawing.Size(120, 22);
+            // 
+            // lblName
+            // 
+            this.lblName = new System.Windows.Forms.Label();
+            this.lblName.Location = new System.Drawing.Point(200, 22);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(40, 20);
+            this.lblName.Text = "Name:";
+            // 
+            // txtName
+            // 
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.txtName.Location = new System.Drawing.Point(240, 20);
+            this.txtName.Name = "txtName";
+            this.txtName.ReadOnly = true;
+            this.txtName.Size = new System.Drawing.Size(300, 22);
+            // 
+            // lblVendor
+            // 
+            this.lblVendor = new System.Windows.Forms.Label();
+            this.lblVendor.Location = new System.Drawing.Point(8, 52);
+            this.lblVendor.Name = "lblVendor";
+            this.lblVendor.Size = new System.Drawing.Size(50, 20);
+            this.lblVendor.Text = "Vendor:";
+            // 
+            // txtVendor
+            // 
+            this.txtVendor = new System.Windows.Forms.TextBox();
+            this.txtVendor.Location = new System.Drawing.Point(70, 50);
+            this.txtVendor.Name = "txtVendor";
+            this.txtVendor.ReadOnly = true;
+            this.txtVendor.Size = new System.Drawing.Size(120, 22);
+            // 
+            // lblProduct
+            // 
+            this.lblProduct = new System.Windows.Forms.Label();
+            this.lblProduct.Location = new System.Drawing.Point(200, 52);
+            this.lblProduct.Name = "lblProduct";
+            this.lblProduct.Size = new System.Drawing.Size(50, 20);
+            this.lblProduct.Text = "Product:";
+            // 
+            // txtProduct
+            // 
+            this.txtProduct = new System.Windows.Forms.TextBox();
+            this.txtProduct.Location = new System.Drawing.Point(260, 50);
+            this.txtProduct.Name = "txtProduct";
+            this.txtProduct.ReadOnly = true;
+            this.txtProduct.Size = new System.Drawing.Size(120, 22);
+            // 
+            // lblTouchpads
+            // 
+            this.lblTouchpads = new System.Windows.Forms.Label();
+            this.lblTouchpads.Location = new System.Drawing.Point(400, 52);
+            this.lblTouchpads.Name = "lblTouchpads";
+            this.lblTouchpads.Size = new System.Drawing.Size(70, 20);
+            this.lblTouchpads.Text = "Touchpads:";
+            // 
+            // txtTouchpads
+            // 
+            this.txtTouchpads = new System.Windows.Forms.TextBox();
+            this.txtTouchpads.Location = new System.Drawing.Point(476, 50);
+            this.txtTouchpads.Name = "txtTouchpads";
+            this.txtTouchpads.ReadOnly = true;
+            this.txtTouchpads.Size = new System.Drawing.Size(40, 22);
+            // 
+            // copyDeviceButton
+            // 
+            this.copyDeviceButton = new System.Windows.Forms.Button();
+            this.copyDeviceButton.Location = new System.Drawing.Point(540, 20);
+            this.copyDeviceButton.Name = "copyDeviceButton";
+            this.copyDeviceButton.Size = new System.Drawing.Size(120, 24);
+            this.copyDeviceButton.TabIndex = 11;
+            this.copyDeviceButton.Text = "Copy details";
+            this.copyDeviceButton.UseVisualStyleBackColor = true;
+            this.copyDeviceButton.Click += new System.EventHandler(this.copyDeviceButton_Click);
+            // 
+            // add controls to group
+            // 
+            this.deviceDetailsGroup.Controls.Add(this.lblInstance);
+            this.deviceDetailsGroup.Controls.Add(this.txtInstance);
+            this.deviceDetailsGroup.Controls.Add(this.lblName);
+            this.deviceDetailsGroup.Controls.Add(this.txtName);
+            this.deviceDetailsGroup.Controls.Add(this.lblVendor);
+            this.deviceDetailsGroup.Controls.Add(this.txtVendor);
+            this.deviceDetailsGroup.Controls.Add(this.lblProduct);
+            this.deviceDetailsGroup.Controls.Add(this.txtProduct);
+            this.deviceDetailsGroup.Controls.Add(this.lblTouchpads);
+            this.deviceDetailsGroup.Controls.Add(this.txtTouchpads);
+            this.deviceDetailsGroup.Controls.Add(this.copyDeviceButton);
             // 
             // MainForm
             // 
