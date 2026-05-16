@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace SteamControllerBridge.UI
 {
@@ -10,6 +11,7 @@ namespace SteamControllerBridge.UI
         private Process? bridgeProcess;
         private bool logsVisible = true;
         private readonly HashSet<string> connectedDevices = new();
+        private readonly Regex statusLineRegex = new(@"^(?<id>\d+): (?<name>.+?) \[vendor=0x(?<vendor>[0-9A-Fa-f]+), product=0x(?<product>[0-9A-Fa-f]+), touchpads=(?<touchpads>\d+)\]", RegexOptions.Compiled);
 
         public MainForm()
         {
@@ -68,8 +70,24 @@ namespace SteamControllerBridge.UI
                 string errStr = await p.StandardError.ReadToEndAsync();
                 if (!string.IsNullOrEmpty(outStr))
                 {
+                    // clear and repopulate from status output
+                    connectedDevices.Clear();
                     foreach (string line in outStr.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
                         AppendLog(line);
+                        var m = statusLineRegex.Match(line);
+                        if (m.Success)
+                        {
+                            string id = m.Groups["id"].Value;
+                            string name = m.Groups["name"].Value;
+                            string vendor = m.Groups["vendor"].Value;
+                            string product = m.Groups["product"].Value;
+                            string touchpads = m.Groups["touchpads"].Value;
+                            string display = $"{id}: {name} [vendor=0x{vendor}, product=0x{product}, touchpads={touchpads}]";
+                            connectedDevices.Add(display);
+                        }
+                    }
+                    UpdateDeviceListBox();
                 }
                 if (!string.IsNullOrEmpty(errStr))
                 {
@@ -222,6 +240,26 @@ namespace SteamControllerBridge.UI
         }
 
         private void refreshButton_Click(object? sender, EventArgs e)
+        {
+            RefreshDeviceListFromStatus();
+        }
+
+        private void autoRefreshCheckBox_CheckedChanged(object? sender, EventArgs e)
+        {
+            bool enabled = autoRefreshCheckBox.Checked;
+            autoRefreshTimer.Enabled = enabled;
+            if (enabled)
+            {
+                autoRefreshTimer.Interval = (int)intervalUpDown.Value * 1000;
+            }
+        }
+
+        private void intervalUpDown_ValueChanged(object? sender, EventArgs e)
+        {
+            autoRefreshTimer.Interval = (int)intervalUpDown.Value * 1000;
+        }
+
+        private void autoRefreshTimer_Tick(object? sender, EventArgs e)
         {
             RefreshDeviceListFromStatus();
         }

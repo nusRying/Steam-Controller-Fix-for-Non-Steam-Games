@@ -17,6 +17,9 @@ namespace SteamControllerBridge.UI
         private System.Windows.Forms.TextBox logTextBox;
         private System.Windows.Forms.ListBox devicesListBox;
         private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.CheckBox autoRefreshCheckBox;
+        private System.Windows.Forms.NumericUpDown intervalUpDown;
+        private System.Windows.Forms.Timer autoRefreshTimer;
 
         protected override void Dispose(bool disposing)
         {
@@ -166,12 +169,43 @@ namespace SteamControllerBridge.UI
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
+            // autoRefreshCheckBox
+            // 
+            this.autoRefreshCheckBox = new System.Windows.Forms.CheckBox();
+            this.autoRefreshCheckBox.Location = new System.Drawing.Point(508, 220);
+            this.autoRefreshCheckBox.Name = "autoRefreshCheckBox";
+            this.autoRefreshCheckBox.Size = new System.Drawing.Size(120, 24);
+            this.autoRefreshCheckBox.TabIndex = 8;
+            this.autoRefreshCheckBox.Text = "Auto-refresh";
+            this.autoRefreshCheckBox.UseVisualStyleBackColor = true;
+            this.autoRefreshCheckBox.CheckedChanged += new System.EventHandler(this.autoRefreshCheckBox_CheckedChanged);
+            // 
+            // intervalUpDown
+            // 
+            this.intervalUpDown = new System.Windows.Forms.NumericUpDown();
+            this.intervalUpDown.Location = new System.Drawing.Point(634, 220);
+            this.intervalUpDown.Name = "intervalUpDown";
+            this.intervalUpDown.Size = new System.Drawing.Size(46, 22);
+            this.intervalUpDown.TabIndex = 9;
+            this.intervalUpDown.Minimum = 1;
+            this.intervalUpDown.Maximum = 3600;
+            this.intervalUpDown.Value = 5;
+            this.intervalUpDown.ValueChanged += new System.EventHandler(this.intervalUpDown_ValueChanged);
+            // 
+            // autoRefreshTimer
+            // 
+            this.autoRefreshTimer = new System.Windows.Forms.Timer();
+            this.autoRefreshTimer.Interval = 5000;
+            this.autoRefreshTimer.Tick += new System.EventHandler(this.autoRefreshTimer_Tick);
+            // 
             // MainForm
             // 
             this.ClientSize = new System.Drawing.Size(424, 260);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.devicesListBox);
             this.Controls.Add(this.refreshButton);
+            this.Controls.Add(this.autoRefreshCheckBox);
+            this.Controls.Add(this.intervalUpDown);
             this.Controls.Add(this.showLogsButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
