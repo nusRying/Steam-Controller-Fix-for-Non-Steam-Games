@@ -156,6 +156,21 @@ namespace SteamControllerBridge.UI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Load persisted settings
+            try
+            {
+                var store = new SettingsStore();
+                var s = store.Load();
+                autoRefreshCheckBox.Checked = s.AutoRefresh;
+                intervalUpDown.Value = Math.Max(intervalUpDown.Minimum, Math.Min(intervalUpDown.Maximum, s.AutoRefreshIntervalSeconds));
+                autoRefreshTimer.Interval = (int)intervalUpDown.Value * 1000;
+                autoRefreshTimer.Enabled = s.AutoRefresh;
+            }
+            catch
+            {
+                // ignore
+            }
+
             Hide();
         }
 
