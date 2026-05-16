@@ -9,6 +9,7 @@ namespace SteamControllerBridge.UI
     {
         private Process? bridgeProcess;
         private bool logsVisible = true;
+        private readonly HashSet<string> connectedDevices = new();
 
         public MainForm()
         {
@@ -46,6 +47,40 @@ namespace SteamControllerBridge.UI
                 try { bridgeProcess.BeginOutputReadLine(); bridgeProcess.BeginErrorReadLine(); } catch { }
             }
             UpdateUiState();
+        }
+
+        private async void RefreshDeviceListFromStatus()
+        {
+            try
+            {
+                string exe = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "SteamControllerBridge.exe");
+                exe = Path.GetFullPath(exe);
+                if (!File.Exists(exe))
+                {
+                    AppendLog("Status: bridge executable not found for status check: " + exe);
+                    return;
+                }
+
+                var psi = new ProcessStartInfo(exe, "status") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true };
+                using var p = Process.Start(psi);
+                if (p == null) return;
+                string outStr = await p.StandardOutput.ReadToEndAsync();
+                string errStr = await p.StandardError.ReadToEndAsync();
+                if (!string.IsNullOrEmpty(outStr))
+                {
+                    foreach (string line in outStr.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                        AppendLog(line);
+                }
+                if (!string.IsNullOrEmpty(errStr))
+                {
+                    foreach (string line in errStr.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                        AppendLog("ERR: " + line);
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendLog("ERR: " + ex.Message);
+            }
         }
 
         private void StopBridge()
@@ -130,9 +165,43 @@ namespace SteamControllerBridge.UI
                 return;
             }
             logTextBox.AppendText(line + Environment.NewLine);
+            // Parse connection events
+            if (line.StartsWith("Connected:", StringComparison.OrdinalIgnoreCase))
+            {
+                string name = line.Substring("Connected:".Length).Trim();
+                if (!connectedDevices.Contains(name))
+                {
+                    connectedDevices.Add(name);
+                    UpdateDeviceListBox();
+                }
+            }
+            else if (line.StartsWith("Disconnected:", StringComparison.OrdinalIgnoreCase))
+            {
+                string rest = line.Substring("Disconnected:".Length).Trim();
+                // The program logs "Disconnected: <instanceId>" — remove any matching by instance id or name
+                // Try to remove any device that starts with the id or contains the token
+                if (!string.IsNullOrEmpty(rest))
+                {
+                    var toRemove = connectedDevices.Where(d => d.Contains(rest, StringComparison.OrdinalIgnoreCase)).ToArray();
+                    foreach (var r in toRemove) connectedDevices.Remove(r);
+                    UpdateDeviceListBox();
+                }
+            }
             // keep the latest visible
             logTextBox.SelectionStart = logTextBox.Text.Length;
             logTextBox.ScrollToCaret();
+        }
+
+        private void UpdateDeviceListBox()
+        {
+            if (devicesListBox.InvokeRequired)
+            {
+                devicesListBox.Invoke(new Action(UpdateDeviceListBox));
+                return;
+            }
+            devicesListBox.Items.Clear();
+            foreach (var d in connectedDevices)
+                devicesListBox.Items.Add(d);
         }
 
         private void startButton_Click(object? sender, EventArgs e)
@@ -150,6 +219,11 @@ namespace SteamControllerBridge.UI
             logsVisible = !logsVisible;
             logTextBox.Visible = logsVisible;
             showLogsButton.Text = logsVisible ? "Logs" : "Show";
+        }
+
+        private void refreshButton_Click(object? sender, EventArgs e)
+        {
+            RefreshDeviceListFromStatus();
         }
     }
 }

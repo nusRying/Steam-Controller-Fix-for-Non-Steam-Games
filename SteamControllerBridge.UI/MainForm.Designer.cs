@@ -15,6 +15,8 @@ namespace SteamControllerBridge.UI
         private System.Windows.Forms.Button showLogsButton;
         private System.Windows.Forms.Panel statusPanel;
         private System.Windows.Forms.TextBox logTextBox;
+        private System.Windows.Forms.ListBox devicesListBox;
+        private System.Windows.Forms.Button refreshButton;
 
         protected override void Dispose(bool disposing)
         {
@@ -145,10 +147,31 @@ namespace SteamControllerBridge.UI
             this.logTextBox.Size = new System.Drawing.Size(400, 180);
             this.logTextBox.TabIndex = 5;
             // 
+            // devicesListBox
+            // 
+            this.devicesListBox = new System.Windows.Forms.ListBox();
+            this.devicesListBox.Location = new System.Drawing.Point(420, 12);
+            this.devicesListBox.Name = "devicesListBox";
+            this.devicesListBox.Size = new System.Drawing.Size(260, 200);
+            this.devicesListBox.TabIndex = 6;
+            // 
+            // refreshButton
+            // 
+            this.refreshButton = new System.Windows.Forms.Button();
+            this.refreshButton.Location = new System.Drawing.Point(420, 220);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(80, 24);
+            this.refreshButton.TabIndex = 7;
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            // 
             // MainForm
             // 
             this.ClientSize = new System.Drawing.Size(424, 260);
             this.Controls.Add(this.logTextBox);
+            this.Controls.Add(this.devicesListBox);
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.showLogsButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
