@@ -12,6 +12,12 @@ namespace SteamControllerBridge.UI
         private bool logsVisible = false;
         private readonly HashSet<string> connectedDevices = new();
         private readonly Regex statusLineRegex = new(@"^(?<id>\d+): (?<name>.+?) \[vendor=0x(?<vendor>[0-9A-Fa-f]+), product=0x(?<product>[0-9A-Fa-f]+), touchpads=(?<touchpads>\d+)\]", RegexOptions.Compiled);
+        private readonly Regex statePayloadRegex = new(@"lx=(?<lx>-?\d+)\s+ly=(?<ly>-?\d+)\s+rx=(?<rx>-?\d+)\s+ry=(?<ry>-?\d+)\s+lt=(?<lt>-?\d+)\s+rt=(?<rt>-?\d+)(?:\s+tp0=(?<tp0>[^ ]+))?(?:\s+tp1=(?<tp1>[^ ]+))?", RegexOptions.Compiled);
+
+        // live values
+        private int lastLx = 0, lastLy = 0, lastRx = 0, lastRy = 0;
+        private int lastLt = 0, lastRt = 0;
+        private string lastTp0 = "-", lastTp1 = "-";
 
         public MainForm()
         {
@@ -255,6 +261,29 @@ namespace SteamControllerBridge.UI
                     if (!string.IsNullOrEmpty(txtInstance.Text) && txtInstance.Text == instance)
                     {
                         txtLive.Text = payload;
+                        var m = statePayloadRegex.Match(payload);
+                        if (m.Success)
+                        {
+                            lastLx = int.Parse(m.Groups["lx"].Value);
+                            lastLy = int.Parse(m.Groups["ly"].Value);
+                            lastRx = int.Parse(m.Groups["rx"].Value);
+                            lastRy = int.Parse(m.Groups["ry"].Value);
+                            lastLt = int.Parse(m.Groups["lt"].Value);
+                            lastRt = int.Parse(m.Groups["rt"].Value);
+                            lastTp0 = m.Groups["tp0"].Success ? m.Groups["tp0"].Value : "-";
+                            lastTp1 = m.Groups["tp1"].Success ? m.Groups["tp1"].Value : "-";
+
+                            // update triggers (map to 0-100)
+                            int ltPct = (int)Math.Round(Math.Clamp(lastLt / 32767.0, 0.0, 1.0) * 100);
+                            int rtPct = (int)Math.Round(Math.Clamp(lastRt / 32767.0, 0.0, 1.0) * 100);
+                            leftTriggerBar.Value = Math.Clamp(ltPct, 0, 100);
+                            rightTriggerBar.Value = Math.Clamp(rtPct, 0, 100);
+                            lblTP0.Text = "TP0: " + lastTp0;
+                            lblTP1.Text = "TP1: " + lastTp1;
+
+                            leftStickBox.Invalidate();
+                            rightStickBox.Invalidate();
+                        }
                     }
                 }
             }
@@ -332,6 +361,58 @@ namespace SteamControllerBridge.UI
             {
                 AppendLog("ERR: Could not copy to clipboard");
             }
+        }
+
+        private void leftStickBox_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            int w = leftStickBox.Width;
+            int h = leftStickBox.Height;
+            g.Clear(System.Drawing.Color.Black);
+            g.DrawEllipse(System.Drawing.Pens.White, 0, 0, w - 1, h - 1);
+
+            float nx = 0, ny = 0;
+            if (Math.Abs(lastLx) > 0 || Math.Abs(lastLy) > 0)
+            {
+                nx = lastLx / 32767f;
+                ny = -lastLy / 32767f; // invert Y for screen coordinates
+            }
+
+            int cx = w / 2;
+            int cy = h / 2;
+            int max = Math.Min(w, h) / 2 - 6;
+            int dx = (int)(nx * max);
+            int dy = (int)(ny * max);
+            int dotX = cx + dx - 6;
+            int dotY = cy + dy - 6;
+            g.FillEllipse(System.Drawing.Brushes.Lime, dotX, dotY, 12, 12);
+        }
+
+        private void rightStickBox_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            int w = rightStickBox.Width;
+            int h = rightStickBox.Height;
+            g.Clear(System.Drawing.Color.Black);
+            g.DrawEllipse(System.Drawing.Pens.White, 0, 0, w - 1, h - 1);
+
+            float nx = 0, ny = 0;
+            if (Math.Abs(lastRx) > 0 || Math.Abs(lastRy) > 0)
+            {
+                nx = lastRx / 32767f;
+                ny = -lastRy / 32767f;
+            }
+
+            int cx = w / 2;
+            int cy = h / 2;
+            int max = Math.Min(w, h) / 2 - 6;
+            int dx = (int)(nx * max);
+            int dy = (int)(ny * max);
+            int dotX = cx + dx - 6;
+            int dotY = cy + dy - 6;
+            g.FillEllipse(System.Drawing.Brushes.Orange, dotX, dotY, 12, 12);
         }
 
         private void startButton_Click(object? sender, EventArgs e)

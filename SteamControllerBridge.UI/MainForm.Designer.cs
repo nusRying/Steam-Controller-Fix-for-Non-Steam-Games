@@ -33,6 +33,15 @@ namespace SteamControllerBridge.UI
         private System.Windows.Forms.TextBox txtTouchpads;
         private System.Windows.Forms.Button copyDeviceButton;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.TextBox txtLive;
+        private System.Windows.Forms.PictureBox leftStickBox;
+        private System.Windows.Forms.PictureBox rightStickBox;
+        private System.Windows.Forms.ProgressBar leftTriggerBar;
+        private System.Windows.Forms.ProgressBar rightTriggerBar;
+        private System.Windows.Forms.Label lblLT;
+        private System.Windows.Forms.Label lblRT;
+        private System.Windows.Forms.Label lblTP0;
+        private System.Windows.Forms.Label lblTP1;
 
         protected override void Dispose(bool disposing)
         {
@@ -348,6 +357,63 @@ namespace SteamControllerBridge.UI
             this.txtLive.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLive.TabIndex = 12;
             this.deviceDetailsGroup.Controls.Add(this.txtLive);
+
+            // leftStickBox
+            this.leftStickBox = new System.Windows.Forms.PictureBox();
+            this.leftStickBox.Location = new System.Drawing.Point(8, 96);
+            this.leftStickBox.Size = new System.Drawing.Size(120, 120);
+            this.leftStickBox.BackColor = System.Drawing.Color.Black;
+            this.leftStickBox.TabIndex = 13;
+            this.leftStickBox.TabStop = false;
+            this.leftStickBox.Paint += new System.Windows.Forms.PaintEventHandler(this.leftStickBox_Paint);
+            this.deviceDetailsGroup.Controls.Add(this.leftStickBox);
+
+            // rightStickBox
+            this.rightStickBox = new System.Windows.Forms.PictureBox();
+            this.rightStickBox.Location = new System.Drawing.Point(136, 96);
+            this.rightStickBox.Size = new System.Drawing.Size(120, 120);
+            this.rightStickBox.BackColor = System.Drawing.Color.Black;
+            this.rightStickBox.TabIndex = 14;
+            this.rightStickBox.TabStop = false;
+            this.rightStickBox.Paint += new System.Windows.Forms.PaintEventHandler(this.rightStickBox_Paint);
+            this.deviceDetailsGroup.Controls.Add(this.rightStickBox);
+
+            // triggers and touchpads
+            this.lblLT = new System.Windows.Forms.Label();
+            this.lblLT.Location = new System.Drawing.Point(268, 96);
+            this.lblLT.Size = new System.Drawing.Size(30, 20);
+            this.lblLT.Text = "LT";
+            this.deviceDetailsGroup.Controls.Add(this.lblLT);
+
+            this.leftTriggerBar = new System.Windows.Forms.ProgressBar();
+            this.leftTriggerBar.Location = new System.Drawing.Point(304, 96);
+            this.leftTriggerBar.Size = new System.Drawing.Size(120, 16);
+            this.leftTriggerBar.Maximum = 100;
+            this.deviceDetailsGroup.Controls.Add(this.leftTriggerBar);
+
+            this.lblRT = new System.Windows.Forms.Label();
+            this.lblRT.Location = new System.Drawing.Point(268, 116);
+            this.lblRT.Size = new System.Drawing.Size(30, 20);
+            this.lblRT.Text = "RT";
+            this.deviceDetailsGroup.Controls.Add(this.lblRT);
+
+            this.rightTriggerBar = new System.Windows.Forms.ProgressBar();
+            this.rightTriggerBar.Location = new System.Drawing.Point(304, 116);
+            this.rightTriggerBar.Size = new System.Drawing.Size(120, 16);
+            this.rightTriggerBar.Maximum = 100;
+            this.deviceDetailsGroup.Controls.Add(this.rightTriggerBar);
+
+            this.lblTP0 = new System.Windows.Forms.Label();
+            this.lblTP0.Location = new System.Drawing.Point(268, 136);
+            this.lblTP0.Size = new System.Drawing.Size(200, 20);
+            this.lblTP0.Text = "TP0: -";
+            this.deviceDetailsGroup.Controls.Add(this.lblTP0);
+
+            this.lblTP1 = new System.Windows.Forms.Label();
+            this.lblTP1.Location = new System.Drawing.Point(268, 156);
+            this.lblTP1.Size = new System.Drawing.Size(200, 20);
+            this.lblTP1.Text = "TP1: -";
+            this.deviceDetailsGroup.Controls.Add(this.lblTP1);
             // 
             // MainForm
             // 
