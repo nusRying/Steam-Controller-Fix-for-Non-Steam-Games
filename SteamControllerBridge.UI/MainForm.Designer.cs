@@ -337,6 +337,18 @@ namespace SteamControllerBridge.UI
             this.deviceDetailsGroup.Controls.Add(this.txtTouchpads);
             this.deviceDetailsGroup.Controls.Add(this.copyDeviceButton);
             // 
+            // txtLive
+            // 
+            this.txtLive = new System.Windows.Forms.TextBox();
+            this.txtLive.Location = new System.Drawing.Point(8, 18);
+            this.txtLive.Multiline = true;
+            this.txtLive.Name = "txtLive";
+            this.txtLive.ReadOnly = true;
+            this.txtLive.Size = new System.Drawing.Size(640, 72);
+            this.txtLive.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtLive.TabIndex = 12;
+            this.deviceDetailsGroup.Controls.Add(this.txtLive);
+            // 
             // MainForm
             // 
             this.ClientSize = new System.Drawing.Size(700, 380);

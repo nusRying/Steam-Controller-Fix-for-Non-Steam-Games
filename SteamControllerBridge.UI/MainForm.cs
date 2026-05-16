@@ -244,6 +244,21 @@ namespace SteamControllerBridge.UI
                     UpdateDeviceListBox();
                 }
             }
+            // Parse STATE lines: "STATE {instance} {payload}"
+            if (line.StartsWith("STATE ", StringComparison.OrdinalIgnoreCase))
+            {
+                var parts = line.Split(new[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length >= 3)
+                {
+                    string instance = parts[1];
+                    string payload = parts[2];
+                    if (!string.IsNullOrEmpty(txtInstance.Text) && txtInstance.Text == instance)
+                    {
+                        txtLive.Text = payload;
+                    }
+                }
+            }
+
             // keep the latest visible
             logTextBox.SelectionStart = logTextBox.Text.Length;
             logTextBox.ScrollToCaret();

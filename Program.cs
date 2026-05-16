@@ -15,6 +15,7 @@ internal static class Program
 			return command switch
 			{
 				"run" => RunMapper(),
+				"run-ui" => RunMapperUi(),
 				"status" => PrintStatus(),
 				"install-startup" => InstallStartup(),
 				"uninstall-startup" => UninstallStartup(),
@@ -35,6 +36,15 @@ internal static class Program
 		Console.WriteLine("Steam controller bridge running.");
 		Console.WriteLine("Press Ctrl+C to stop.");
 		mapper.Run();
+		return 0;
+	}
+
+	private static int RunMapperUi()
+	{
+		using var mapper = new SteamControllerMapper();
+		Console.WriteLine("Steam controller bridge running (UI mode).");
+		Console.WriteLine("Press Ctrl+C to stop.");
+		mapper.RunWithUiOutput();
 		return 0;
 	}
 
@@ -163,6 +173,35 @@ internal sealed class SteamControllerMapper : IDisposable
 		}
 	}
 
+		public void RunWithUiOutput()
+		{
+			try
+			{
+				while (!cancellation.IsCancellationRequested)
+				{
+					SdlNative.UpdateGamepads();
+					RefreshSessions();
+					UpdateSessions();
+					// emit a status line per session for UI parsing
+					foreach (var kv in sessions)
+					{
+						int instanceId = kv.Key;
+						try
+						{
+							string status = kv.Value.GetStatusText();
+							Console.WriteLine($"STATE {instanceId} {status}");
+						}
+						catch { }
+					}
+					Thread.Sleep(50);
+				}
+			}
+			finally
+			{
+				Dispose();
+			}
+		}
+
 	public IReadOnlyList<SteamControllerDeviceInfo> DiscoverSteamControllers()
 	{
 		var devices = new List<SteamControllerDeviceInfo>();
@@ -279,6 +318,38 @@ internal sealed class SteamControllerSession : IDisposable
 		{
 			// No virtual controller available; nothing to send
 			return;
+		}
+
+		public string GetStatusText()
+		{
+			try
+			{
+				short lx = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftX);
+				short ly = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftY);
+				short rx = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightX);
+				short ry = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightY);
+				short lt = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.LeftTrigger);
+				short rt = SdlNative.GetGamepadAxis(gamepad, SdlGamepadAxis.RightTrigger);
+
+				string tp0 = "";
+				string tp1 = "";
+				if (SdlNative.GetNumGamepadTouchpads(gamepad) > 0)
+				{
+					if (TryReadTouchpad(0, out bool d0, out float x0, out float y0))
+						tp0 = $"tp0={(d0?1:0)},{x0:F3},{y0:F3}";
+				}
+				if (SdlNative.GetNumGamepadTouchpads(gamepad) > 1)
+				{
+					if (TryReadTouchpad(1, out bool d1, out float x1, out float y1))
+						tp1 = $"tp1={(d1?1:0)},{x1:F3},{y1:F3}";
+				}
+
+				return $"{deviceInfo.Name.Replace(' ', '_')} lx={lx} ly={ly} rx={rx} ry={ry} lt={lt} rt={rt} {tp0} {tp1}";
+			}
+			catch
+			{
+				return deviceInfo.Name.Replace(' ', '_');
+			}
 		}
 		virtualController.SetButton("A", SdlNative.GetGamepadButton(gamepad, SdlGamepadButton.South));
 		virtualController.SetButton("B", SdlNative.GetGamepadButton(gamepad, SdlGamepadButton.East));
